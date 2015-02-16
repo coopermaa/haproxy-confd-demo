@@ -12,5 +12,6 @@ ExecStartPre=-/usr/bin/docker kill %n
 ExecStartPre=-/usr/bin/docker rm %n
 ExecStartPre=/usr/bin/docker pull coopermaa/haproxy-confd:latest
 # port 80 for http communications, port 1936 for statistics
-ExecStart=/usr/bin/docker run --name %n -p ${COREOS_PUBLIC_IPV4}:80:80 -p ${COREOS_PRIVATE_IPV4}:1936:1936 -e "ETCD=${COREOS_PRIVATE_IPV4}:4001" coopermaa/haproxy-confd:latest
+ExecStart=/usr/bin/docker run --name %n -p ${COREOS_PUBLIC_IPV4}:80:80 \
+  -p ${COREOS_PRIVATE_IPV4}:1936:1936 -e "ETCD=${COREOS_PRIVATE_IPV4}:4001" coopermaa/haproxy-confd:latest
 ExecStop=/usr/bin/docker stop %n
