@@ -36,4 +36,4 @@ echo "[haproxy] starting haproxy service..."
 service haproxy reload
 
 # tail is keep running to allow the script to continue running
-tail -f /dev/null
+# tail -f /dev/null

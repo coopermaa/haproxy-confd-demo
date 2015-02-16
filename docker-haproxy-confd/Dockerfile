@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM ubuntu:14.04
 MAINTAINER MAINTAINER coopermaa77@gmail.com
 
 # Suppress dialogs for information during package installing
