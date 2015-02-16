@@ -8,9 +8,9 @@ ENV DEBIAN_FRONTEND noninteractive
 # Let's install haproxy-1.5 (which has native ssl supported)
 # add-apt-repository instruction is part of software-properties-common
 # (formerly python-software-properties)
-RUN apt-get install -y software-properties-common && \
-    add-apt-repository -y ppa:vbernat/haproxy-1.5 && \    
-    apt-get update -q && \
+RUN apt-get update -q && \
+    apt-get install -y software-properties-common && \
+    add-apt-repository -y ppa:vbernat/haproxy-1.5 && \
     apt-get install -y haproxy curl && \
     sed -i 's/^ENABLED=.*/ENABLED=1/' /etc/default/haproxy 
 
