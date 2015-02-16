@@ -1,0 +1,24 @@
+[Unit]
+Description=Announce Nginx
+BindsTo=nginx@%i.service
+After=nginx@%i.service
+
+[Service]
+EnvironmentFile=/etc/environment
+# %i means instance name , e.g. 1 (for nginx-discovery@1.service) 
+# and 2 (for nginx-discovery@2.service)
+ExecStart=/bin/sh -c '\
+   while true; do \
+     curl -f ${COREOS_PRIVATE_IPV4}; \
+     if [ $? -eq 0 ]; then \
+       etcdctl set /services/web-backend/nginx-%i \'nginx-%i ${COREOS_PRIVATE_IPV4}:80\' --ttl 60; \
+     else \
+       etcdctl rm /services/web-backend/nginx-%i; \
+     fi; \
+     sleep 45; \
+   done'
+ExecStop=/usr/bin/etcdctl rm /services/web-backend/nginx-%i
+
+[X-Fleet]
+# Placed this unit onto the same machine that the corresponding nginx service is running on
+MachineOf=nginx@%i.service

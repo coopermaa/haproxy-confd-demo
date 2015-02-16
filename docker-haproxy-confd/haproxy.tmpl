@@ -1,0 +1,25 @@
+global
+  maxconn 1024
+  daemon
+
+defaults
+  mode http
+  timeout connect 5000ms   # The amount of time before a connection times out
+  timeout client 50000ms   # The amount of time before a client times out.
+  timeout server 50000ms   # The amount of time before our server times out.
+
+frontend web-frontend
+  bind *:80
+  default_backend web-backend
+
+backend web-backend
+{{ range getvs "/services/web-backend/*" }}
+  server {{ . }} check
+{{ end }}
+
+listen stats :1936
+   stats enable   
+   # collect stats on the specified frontend or backend
+   stats scope web-backend
+   stats uri /
+   stats refresh 5s
