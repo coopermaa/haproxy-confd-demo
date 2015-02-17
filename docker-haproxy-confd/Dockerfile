@@ -24,4 +24,4 @@ RUN cd /usr/local/bin && \
 ADD etc/confd/ /etc/confd
 
 EXPOSE 80 1936
-CMD /usr/local/bin/confd -debug -verbose -interval 60 -node $ETCD
+CMD /usr/local/bin/confd -debug -verbose -interval 20 -node $ETCD
