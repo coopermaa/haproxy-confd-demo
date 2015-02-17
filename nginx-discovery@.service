@@ -9,9 +9,9 @@ EnvironmentFile=/etc/environment
 # and 2 (for nginx-discovery@2.service)
 ExecStart=/bin/sh -c '\
    while true; do \
-     curl -f ${COREOS_PRIVATE_IPV4}; \
+     curl -f ${COREOS_PRIVATE_IPV4}:8080; \
      if [ $? -eq 0 ]; then \
-       etcdctl set /services/web-backend/nginx-%i \'nginx-%i ${COREOS_PRIVATE_IPV4}:80\' --ttl 60; \
+       etcdctl set /services/web-backend/nginx-%i \'nginx-%i ${COREOS_PRIVATE_IPV4}:8080\' --ttl 60; \
      else \
        etcdctl rm /services/web-backend/nginx-%i; \
      fi; \
