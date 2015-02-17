@@ -13,10 +13,6 @@ keys = [
   "/services/web-backend",
 ]
 
-# File ownership and mode information
-owner = "root"
-mode = "0644"
-
 # These are the commands that will be used to check whether the rendered config is
 # valid and to reload the actual service once the new config is in place
 check_cmd = "/usr/sbin/haproxy -c -f {{ .src }}"

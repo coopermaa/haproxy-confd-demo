@@ -4,16 +4,14 @@ Requires=docker.service
 After=docker.service
 
 [Service]
-# Configures the time to wait for start-up
-TimeoutStartSec=0
-# Directives with "=-" are to ignore errors for this command
-# %i means instance name , e.g. 1 (for nginx@1.service) 
-# and 2 (for nginx@2.service)
+EnvironmentFile=/etc/environment
 ExecStartPre=-/usr/bin/docker kill nginx-%i
 ExecStartPre=-/usr/bin/docker rm nginx-%i
 ExecStartPre=/usr/bin/docker pull nginx:latest
-ExecStart=/usr/bin/docker run --name nginx-%i -p 80:80 nginx:latest
+ExecStartPre=/usr/bin/etcdctl set /services/web-backend/nginx-%i 'nginx-%i ${COREOS_PRIVATE_IPV4}:8080' --ttl 60
+ExecStart=/usr/bin/docker run --name nginx-%i -p 8080:80 nginx:latest
 ExecStop=/usr/bin/docker stop nginx-%i
+ExecStop=/usr/bin/etcdctl rm /services/web-backend/nginx-%i
 
 [X-Fleet]
 # Don't schedule on the same machine as other Nginx instances
